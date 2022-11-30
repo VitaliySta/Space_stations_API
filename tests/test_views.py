@@ -101,8 +101,10 @@ def test_move_axis_wrong(station, admin_client, axis, distance):
     elif not axis:
         assert response.json() == {'axis': ['Это поле не может быть пустым.']}
     else:
-        assert response.json() == f'Вы ввели неверную ось координат - ' \
-                                  f'{axis}! Введите - x или y или z'
+        assert response.json() == {
+            'axis': [f'Вы ввели неверную ось координат - {axis}! '
+                     f'Введите - x или y или z']
+        }
 
 
 @pytest.mark.django_db

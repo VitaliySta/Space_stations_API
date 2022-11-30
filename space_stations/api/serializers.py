@@ -31,10 +31,6 @@ class PositionSerializer(serializers.ModelSerializer):
             'z',
         )
 
-    def validate(self, attrs):
-        print('Читай тут', attrs)
-        return attrs
-
 
 class MoveSerializer(serializers.ModelSerializer):
 
@@ -44,3 +40,11 @@ class MoveSerializer(serializers.ModelSerializer):
             'axis',
             'distance',
         )
+
+    def validate_axis(self, value):
+        if value not in ('x', 'y', 'z'):
+            raise serializers.ValidationError(
+                f'Вы ввели неверную ось координат - {value}! '
+                f'Введите - x или y или z',
+            )
+        return value

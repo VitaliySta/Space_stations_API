@@ -35,16 +35,9 @@ class StationViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 distance = serializer.validated_data['distance']
                 axis = serializer.validated_data['axis']
-                try:
-                    new_distance = station.__getattribute__(axis)
-                except AttributeError:
-                    return Response(
-                        f'Вы ввели неверную ось координат - {axis}! '
-                        f'Введите - x или y или z',
-                        status=status.HTTP_400_BAD_REQUEST
-                    )
+                new_distance = station.__getattribute__(axis)
                 new_distance += distance
-                station.__setattr__(axis, new_distance)
+                setattr(station, axis, new_distance)
                 station.save()
                 serializer.save(station=station, user=request.user)
                 return Response(self.serializer_class(station).data)
